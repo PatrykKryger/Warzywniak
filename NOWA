@@ -1,0 +1,383 @@
+NAVBAR
+import React from "react";
+
+export default function Navbar() {
+    return (
+        <nav className="navbar">
+            <div className="navbar-logo">Warzywex</div>
+            <ul className="navbar-links">
+                <li><a href="#oferta">Oferta</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+                <li><a href="#koszyk">Koszyk</a></li>
+                <li><a href="#zaloguj">Zaloguj</a></li>
+            </ul>
+            <style>{`
+        .navbar {
+          width: 100%;
+          background: #174d3c;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0.7rem 2.2rem;
+          box-shadow: 0 2px 14px #174d3c1a;
+          position: sticky;
+          top: 0;
+          z-index: 30;
+        }
+        .navbar-logo {
+          font-size: 1.45rem;
+          font-weight: bold;
+          letter-spacing: 2px;
+          color: #48b170;
+        }
+        .navbar-links {
+          display: flex;
+          gap: 2.2rem;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+        .navbar-links li a {
+          color: #fff;
+          text-decoration: none;
+          font-weight: 500;
+          font-size: 1.09rem;
+          padding: 7px 14px;
+          border-radius: 9px;
+          transition: background 0.17s, color 0.16s;
+        }
+        .navbar-links li a:hover,
+        .navbar-links li a:focus {
+          background: #48b170;
+          color: #174d3c;
+        }
+        @media (max-width: 700px) {
+          .navbar {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem 1.1rem;
+          }
+          .navbar-links {
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 8px;
+          }
+          .navbar-logo {
+            font-size: 1.1rem;
+          }
+        }
+      `}</style>
+        </nav>
+    );
+}
+
+MAIN
+import React, { useEffect, useState } from "react";
+
+const ciekawostki = [
+    "Banany są jagodami, a truskawki nie są.",
+    "Jabłka unoszą się na wodzie, bo w 25% składają się z powietrza.",
+    "Arbuz składa się w ponad 90% z wody.",
+    "Marchewki były kiedyś fioletowe.",
+    "Ananas rośnie na ziemi, nie na drzewie.",
+];
+
+const katalogZdjec = [
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80",
+];
+
+export default function MainPage() {
+    const [offsetY, setOffsetY] = useState(0);
+    const [showWelcome, setShowWelcome] = useState(false);
+    const [katalogIdx, setKatalogIdx] = useState(0);
+    const [ciekawostkaIdx, setCiekawostkaIdx] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => setOffsetY(window.scrollY);
+        window.addEventListener("scroll", handleScroll);
+        setTimeout(() => setShowWelcome(true), 350);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCiekawostkaIdx((idx) => (idx + 1) % ciekawostki.length);
+        }, 20000);
+        return () => clearInterval(interval);
+    }, []);
+    katalogZdjec.slice(katalogIdx, katalogIdx + 3);
+
+    const prevZdjecie = () =>
+        setKatalogIdx((idx) => (idx - 1 + katalogZdjec.length) % katalogZdjec.length);
+    const nextZdjecie = () =>
+        setKatalogIdx((idx) => (idx + 1) % katalogZdjec.length);
+
+    const adres = "ul. Warzywna 12, 01-234 Zielone Miasto";
+    const GOOGLE_MAPS_LINK =
+        "https://www.google.com/maps?q=52.2297,21.0122";
+
+    return (
+        <div className="mainpage-root">
+            {/* Hero sekcja */}
+            <div
+                className="mainpage-hero"
+                style={{
+                    backgroundImage:
+                        "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80')",
+                    backgroundPositionY: `${offsetY * 0.5}px`,
+                }}
+            >
+                <div className={`mainpage-hero-text ${showWelcome ? "show" : ""}`}>
+                    Witaj w sklepie <span className="warzywex">Warzywex</span>
+                </div>
+                <div className="mainpage-hero-overlay" />
+            </div>
+
+            {/* Wyprzedaż + karuzela */}
+            <div className="mainpage-sale">
+                <h2>WYPRZEDAŻ</h2>
+                <div className="mainpage-katalog">
+                    <button className="arrow left" onClick={prevZdjecie} aria-label="Poprzednie zdjęcie">
+                        <span>&#8592;</span>
+                    </button>
+                    <div className="mainpage-katalog-zdjecia">
+                        {Array(3)
+                            .fill(0)
+                            .map((_, i) => {
+                                const idx = (katalogIdx + i) % katalogZdjec.length;
+                                return (
+                                    <img
+                                        key={idx}
+                                        src={katalogZdjec[idx]}
+                                        alt={`warzywo ${idx + 1}`}
+                                        className="katalog-img"
+                                    />
+                                );
+                            })}
+                    </div>
+                    <button className="arrow right" onClick={nextZdjecie} aria-label="Następne zdjęcie">
+                        <span>&#8594;</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Ciekawostki */}
+            <div className="mainpage-ciekawostki">
+                <h3>Ciekawostka o owocach:</h3>
+                <div className="ciekawostka">{ciekawostki[ciekawostkaIdx]}</div>
+            </div>
+
+            {/* Mapa i adres */}
+            <div className="mainpage-mapa">
+                <h3>Gdzie nas znajdziesz?</h3>
+                <div className="adres">{adres}</div>
+                <iframe
+                    title="Mapa sklepu"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=21.0082%2C52.2277%2C21.0162%2C52.2317&amp;layer=mapnik"
+                    style={{ width: "100%", height: 300, border: 0, marginTop: 10 }}
+                    loading="lazy"
+                ></iframe>
+                <div>
+                    <a href={GOOGLE_MAPS_LINK} target="_blank" rel="noopener noreferrer">
+                        Otwórz w Google Maps
+                    </a>
+                </div>
+            </div>
+            {/* Stylizacja */}
+            <style>{`
+        :root {
+          --zielony-butelka: #174d3c;
+          --zielony-butelka-jasny: #1e6b54;
+          --zielony-butelka-pastel: #2f8060;
+          --zielony-akcent: #48b170;
+          --bialy: #fff;
+          --bialy-lekki: #f8faf7;
+          --box-shadow: 0 6px 32px 0 rgba(23,77,60,0.13);
+          --radius: 22px;
+          --font-main: 'Inter', 'Segoe UI', Arial, sans-serif;
+        }
+        .mainpage-root {
+          font-family: var(--font-main);
+          background: var(--bialy-lekki);
+          color: var(--zielony-butelka);
+          min-height: 100vh;
+          letter-spacing: 0.01em;
+        }
+        .mainpage-hero {
+          position: relative;
+          height: 42vh;
+          min-height: 260px;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          display: flex;
+          align-items: flex-end;
+          overflow: hidden;
+        }
+        .mainpage-hero-overlay {
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(23,77,60,0.40);
+          backdrop-filter: blur(8px);
+          z-index: 1;
+        }
+        .mainpage-hero-text {
+          position: absolute;
+          left: 0; bottom: 32px;
+          padding-left: 3.2rem;
+          color: var(--bialy);
+          font-size: 2.4rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+          opacity: 0;
+          z-index: 2;
+          transform: translateX(-90px);
+          transition: all 0.85s cubic-bezier(.62,.24,.39,1.12);
+          text-shadow: 0 4px 32px rgba(23,77,60,0.18);
+        }
+        .mainpage-hero-text.show {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        .mainpage-hero-text .warzywex {
+          color: var(--zielony-akcent);
+        }
+        .mainpage-sale {
+          background: var(--bialy);
+          box-shadow: var(--box-shadow);
+          border-radius: var(--radius);
+          margin: -48px auto 0 auto;
+          max-width: 860px;
+          padding: 34px 0 18px 0;
+          text-align: center;
+          position: relative;
+          z-index: 5;
+        }
+        .mainpage-sale h2 {
+          color: var(--zielony-akcent);
+          font-size: 2.1rem;
+          font-weight: bold;
+          margin-bottom: 22px;
+          letter-spacing: 2px;
+        }
+        .mainpage-katalog {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+        }
+        .arrow {
+          border: none;
+          background: var(--zielony-butelka);
+          color: var(--bialy);
+          font-size: 2.5rem;
+          cursor: pointer;
+          border-radius: 50%;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px #174d3c22;
+          transition: background 0.24s, color 0.2s, transform 0.18s;
+          outline: none;
+        }
+        .arrow:active, .arrow:hover {
+          background: var(--zielony-butelka-jasny);
+          color: var(--zielony-akcent);
+          transform: scale(1.08);
+        }
+        .mainpage-katalog-zdjecia {
+          display: flex;
+          gap: 18px;
+          padding: 0 8px;
+        }
+        .katalog-img {
+          width: 160px;
+          height: 110px;
+          object-fit: cover;
+          border-radius: var(--radius);
+          box-shadow: 0 2px 18px #174d3c19;
+          border: 2.5px solid var(--bialy-lekki);
+          background: var(--bialy);
+          transition: transform 0.21s, box-shadow 0.28s;
+        }
+        .katalog-img:hover {
+          transform: scale(1.04);
+          box-shadow: 0 8px 32px #174d3c22;
+        }
+        .mainpage-ciekawostki {
+          background: linear-gradient(90deg, var(--bialy-lekki), #e9f3ed 70%);
+          border-radius: var(--radius);
+          margin: 36px auto 0 auto;
+          max-width: 800px;
+          padding: 28px 0 18px 0;
+          text-align: center;
+          box-shadow: 0 2px 8px #174d3c11;
+        }
+        .mainpage-ciekawostki h3 {
+          color: var(--zielony-butelka-jasny);
+          margin-bottom: 7px;
+          font-size: 1.3rem;
+        }
+        .ciekawostka {
+          font-size: 1.18rem;
+          color: var(--zielony-butelka-pastel);
+          min-height: 30px;
+          font-weight: 500;
+          transition: opacity 0.4s;
+        }
+        .mainpage-mapa {
+          background: var(--bialy-lekki);
+          border-radius: var(--radius);
+          margin: 36px auto 30px auto;
+          max-width: 800px;
+          padding: 28px 0 35px 0;
+          text-align: center;
+          box-shadow: 0 2px 10px #174d3c13;
+        }
+        .mainpage-mapa h3 {
+          color: var(--zielony-butelka);
+          font-size: 1.25rem;
+        }
+        .mainpage-mapa .adres {
+          margin-bottom: 12px;
+          color: var(--zielony-butelka-pastel);
+          font-weight: 600;
+        }
+        .mainpage-mapa iframe {
+          border-radius: 13px;
+          margin-bottom: 12px;
+          box-shadow: 0 2px 8px #174d3c13;
+        }
+        .mainpage-mapa a {
+          color: var(--zielony-akcent);
+          text-decoration: underline;
+          font-weight: 500;
+          letter-spacing: 1px;
+        }
+        @media (max-width: 950px) {
+          .mainpage-sale, .mainpage-ciekawostki, .mainpage-mapa {
+            max-width: 97vw;
+          }
+          .katalog-img { width: 120px; height: 80px; }
+        }
+        @media (max-width: 600px) {
+          .mainpage-hero-text {
+            font-size: 1.15rem;
+            padding-left: 1.1rem;
+            bottom: 18px;
+          }
+          .mainpage-sale { padding: 18px 0 8px 0; }
+          .mainpage-ciekawostki, .mainpage-mapa { padding: 14px 0 11px 0; }
+          .mainpage-katalog-zdjecia { gap: 6px; }
+          .katalog-img { width: 70px; height: 45px; }
+        }
+      `}</style>
+        </div>
+    );
+}
