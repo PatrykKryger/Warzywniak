@@ -1,14 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-logo">Warzywex</div>
             <ul className="navbar-links">
-                <li><a href="#oferta">Oferta</a></li>
-                <li><a href="#kontakt">Kontakt</a></li>
-                <li><a href="#koszyk">Koszyk</a></li>
-                <li><a href="#zaloguj">Zaloguj</a></li>
+                <li><Link to="/">Strona główna</Link></li>
+                <li><Link to="/oferta">Oferta</Link></li>
+                <li><Link to="/kontakt">Kontakt</Link></li>
+                <li><Link to="/">Koszyk</Link></li>
+                <li><Link to="/login">Zaloguj</Link></li>
             </ul>
             <style>{`
         .navbar {
