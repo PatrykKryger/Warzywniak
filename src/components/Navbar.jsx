@@ -4,15 +4,21 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
     return (
         <nav className="navbar">
-            <div className="navbar-logo">Warzywex</div>
             <ul className="navbar-links">
-                <li><Link to="/">Strona główna</Link></li>
+                <li id={"logo1"}><Link to="/">Warzywex</Link></li>
+            </ul>
+
+            <ul className="navbar-links">
                 <li><Link to="/oferta">Oferta</Link></li>
                 <li><Link to="/kontakt">Kontakt</Link></li>
                 <li><Link to="/">Koszyk</Link></li>
                 <li><Link to="/login">Zaloguj</Link></li>
             </ul>
             <style>{`
+        #logo1 {
+            float: left;
+        }
+        
         .navbar {
           width: 100%;
           background: #174d3c;
@@ -20,7 +26,7 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 0.7rem 2.2rem;
+          padding: 0.7rem 10px;
           box-shadow: 0 2px 14px #174d3c1a;
           position: sticky;
           top: 0;
