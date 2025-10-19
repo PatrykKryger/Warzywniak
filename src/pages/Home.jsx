@@ -13,7 +13,7 @@ const ciekawostki = [
     "Banany są jagodami, a truskawki nie są.",
     "Jabłka unoszą się na wodzie, bo w 25% składają się z powietrza.",
     "Arbuz składa się w ponad 90% z wody.",
-    "Marchewki były kiedyś fioletowe.",
+    "Marchewki były kiefsafedyś fioletowe.",
     "Ananas rośnie na ziemi, nie na drzewie.",
 ];
 
