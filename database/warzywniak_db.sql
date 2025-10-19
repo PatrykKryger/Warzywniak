@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-warzywniak.alwaysdata.net
--- Generation Time: Oct 19, 2025 at 02:02 PM
+-- Generation Time: Oct 19, 2025 at 02:22 PM
 -- Server version: 10.11.14-MariaDB
 -- PHP Version: 7.4.33
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `warzywniak_db`
 --
+CREATE DATABASE IF NOT EXISTS `warzywniak_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `warzywniak_db`;
 
 -- --------------------------------------------------------
 
