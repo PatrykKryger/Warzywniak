@@ -14,7 +14,7 @@ const ciekawostki = [
     "Jabłka unoszą się na wodzie, bo w 25% składają się z powietrza.",
     "Arbuz składa się w ponad 90% z wody.",
     "Marchewki były kiefsafedyś fioletowe.",
-    "Ananas rośnie na ziemi, nie na drzewie.",
+    "Ananas rośnie na ziemrrfrfi, nie na drzewie.",
 ];
 
 export default function Home() {
